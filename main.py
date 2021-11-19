@@ -4,8 +4,8 @@ import turtle
 
 import ball
 # Importing internal packages.
-import dash
 import paddle
+import scoreboard
 
 # Constants.
 GAME_WINDOW_WIDTH = 800
@@ -16,11 +16,11 @@ GAME_WINDOW_MAX_Y_POSITION = 280
 GAME_WINDOW_MIN_Y_POSITION = -280
 GAME_WINDOW_MAX_X_POSITION = 340
 GAME_WINDOW_MIN_X_POSITION = -340
-PADDLE_SPEED = 0.1
 PADDLE_TOLERANCE = 50
 R_PADDLE_INITIAL_POSITION = (370, 0)
 L_PADDLE_INITIAL_POSITION = (-380, 0)
 INITIAL_SCORE = (0, 0)
+BALL_INITIAL_POSITION = (0, 0)
 
 # Game initialization.
 game_window = turtle.Screen()
@@ -30,13 +30,12 @@ game_window.title(GAME_WINDOW_TITLE)
 # Hide the details of setting the turtles in position and moving to initial position.
 game_window.tracer(0)
 # Create scoreboard.
-print('Calling scoreboard class')
-my_score = dash.Dash()
+my_board = scoreboard.Scoreboard()
 # Create right paddle.
 r_paddle = paddle.Paddle(R_PADDLE_INITIAL_POSITION, game_window)
 l_paddle = paddle.Paddle(L_PADDLE_INITIAL_POSITION, game_window)
 # Create ball.
-my_ball = ball.Ball()
+my_ball = ball.Ball(BALL_INITIAL_POSITION)
 # Listen to keystrokes.
 game_window.listen()
 game_window.onkeypress(key='q', fun=l_paddle.move_up)
@@ -48,7 +47,7 @@ game_is_on = True
 while game_is_on:
     # Update the window with the last movements.
     game_window.update()
-    time.sleep(PADDLE_SPEED)
+    time.sleep(my_ball.move_speed)
     my_ball.move(10)
     # Detect collision with wall.
     if my_ball.ycor() > GAME_WINDOW_MAX_Y_POSITION or my_ball.ycor() < GAME_WINDOW_MIN_Y_POSITION:
@@ -59,9 +58,11 @@ while game_is_on:
         my_ball.bounce_x()
     # Detect when the right paddle misses.
     if my_ball.xcor() > GAME_WINDOW_MAX_X_POSITION + 40:
+        my_board.increase_l_score()
         my_ball.reset_position()
     # Detect when the left paddle misses.
     if my_ball.xcor() < GAME_WINDOW_MIN_X_POSITION - 40:
+        my_board.increase_r_score()
         my_ball.reset_position()
 # Exit window on click.
 game_window.exitonclick()

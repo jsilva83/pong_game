@@ -10,22 +10,22 @@ WINDOW_MIN_HEIGHT_POSITION = -300
 WINDOW_MAX_WIDTH_POSITION = 300
 WINDOW_MIN_WIDTH_POSITION = -300
 DISTANCE_TOLERANCE = 10
+PADDLE_SPEED = 0.1
 
 
 class Ball(turtle.Turtle):
 
-    def __init__(self):
+    def __init__(self, initial_position):
         """Creates a turtle ball at the center of the screen"""
         super().__init__()
         self.shape(BALL_SHAPE)
         self.color(BALL_COLOR)
         self.penup()
-        self.goto(x=0, y=0)
-        # Set the ratio between x displacement and y displacement (not used).
-        self.ratio_xy = random.uniform(0.3, 0.7)
+        self.goto(initial_position)
         # Set attribute for displacement for x and y axes.
-        self.x_move = 10
-        self.y_move = 10
+        self.x_move = DISTANCE_TOLERANCE
+        self.y_move = DISTANCE_TOLERANCE
+        self.move_speed = PADDLE_SPEED
         return
 
     def move_right_up_corner(self, n_steps) -> None:
@@ -50,15 +50,18 @@ class Ball(turtle.Turtle):
     def bounce_y(self) -> None:
         """Bounces the ball if hits the wall."""
         self.y_move *= -1
+        self.move_speed *= 0.9
         return
 
     def bounce_x(self) -> None:
         """Bounces the ball if hits the wall."""
         self.x_move *= -1
+        self.move_speed *= 0.9
         return
 
     def reset_position(self) -> None:
         """Reset position of ball to center."""
+        self.move_speed = 0.1
         self.goto(0, 0)
         self.bounce_x()
         return
