@@ -1,5 +1,4 @@
 # Importing external packages.
-import random
 import turtle
 
 # Constants.
@@ -40,7 +39,7 @@ class Ball(turtle.Turtle):
             self.goto(x=new_x, y=new_y)
         return
 
-    def move(self, n_steps) -> None:
+    def move(self) -> None:
         """Moves the ball in all directions."""
         new_x = self.xcor() + self.x_move
         new_y = self.ycor() + self.y_move

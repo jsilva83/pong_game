@@ -48,7 +48,7 @@ while game_is_on:
     # Update the window with the last movements.
     game_window.update()
     time.sleep(my_ball.move_speed)
-    my_ball.move(10)
+    my_ball.move()
     # Detect collision with wall.
     if my_ball.ycor() > GAME_WINDOW_MAX_Y_POSITION or my_ball.ycor() < GAME_WINDOW_MIN_Y_POSITION:
         my_ball.bounce_y()
